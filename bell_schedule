@@ -1,0 +1,42 @@
+#!python
+# bellSchedule.py - school bell schedule
+
+import time,datetime,winsound
+#bell schedule based on the day of the week
+daily = ['7:30', '8:12', '8:15', '8:59', '9:02',
+         '9:46', '9:49', '10:33', '10:36', '11:20',
+         '11:23', '11:40', '12:10', '12:54', '12:57',
+         '13:41','13:44', '14:28', '14:31','15:15']
+
+thursday = ['7:30', '8:12', '8:15', '9:13', '9:42',
+            '9:45', '10:14', '10:17', '10:47', '10:50',
+            '11:20', '11:23', '11:40', '12:10', '12:54',
+            '12:57', '13:41', '13:44', '14:28', '14:31',
+            '15:15']
+def ring(dt,hour,minute):
+    ringTime = datetime.datetime(dt.year,dt.month,dt.day,hour,minute,0)
+    while datetime.datetime.now() < ringTime:
+        time.sleep(1)
+    winsound.PlaySound('bell.wav',winsound.SND_FILENAME)
+    
+def main():
+    day = datetime.datetime.today().weekday()
+    #identify bell schedule based on the day of the week 
+    if day ==5 or day ==6: 
+        sys.exit()
+    if day == 3:
+        times = thursday
+    else:
+        times = daily
+    dt = datetime.datetime.now()
+    #get next bell that will ring
+    for i in times:
+        split = i.split(':')
+        hour = int(split[0])
+        minute = int(split[1])
+        if ((hour-dt.hour)*3600 +(minute-dt.minute)*60 - dt.second)> 0:
+            print(i)
+            ring(dt,hour,minute)
+    
+
+main()
